@@ -44,7 +44,7 @@ public class InMemoryHistoryMemoryTest {
     }
 
     @Test
-    public void getHistoryShouldReturnOldTaskAfterUpdate(){
+    public void getHistoryShouldReturnOldTaskAfterUpdate() {
         Task cleanFloor = new Task("Пропылесосить полы", "Попробовать робота-пылесоса");
         taskManager.addTask(cleanFloor);
         taskManager.getTaskById(cleanFloor.getId());
@@ -64,15 +64,15 @@ public class InMemoryHistoryMemoryTest {
     }
 
     @Test
-    public void getHistoryShouldReturnOldEpicAfterUpdate(){
+    public void getHistoryShouldReturnOldEpicAfterUpdate() {
         Epic roomRenovation = new Epic("Сделать ремонт в комнате", "Управиться за 10 дней");
         taskManager.addEpic(roomRenovation);
         taskManager.getEpicById(roomRenovation.getId());
         taskManager.updateEpic(
                 new Epic(roomRenovation.getId(),
-                "Изменили на новое имя",
-                "Изменили описание",
-                Status.IN_PROGRESS));
+                        "Изменили на новое имя",
+                        "Изменили описание",
+                        Status.IN_PROGRESS));
         List<Task> epicHistory = taskManager.getHistory();
         Epic oldEpic = (Epic) epicHistory.getFirst();
         assertEquals(roomRenovation.getName(), oldEpic.getName(),
@@ -83,7 +83,7 @@ public class InMemoryHistoryMemoryTest {
     }
 
     @Test
-    public void getHistoryShouldReturnOldSubtaskAfterUpdate(){
+    public void getHistoryShouldReturnOldSubtaskAfterUpdate() {
         Epic roomRenovation = new Epic("Сделать ремонт в комнате", "Управиться за 10 дней");
         taskManager.addEpic(roomRenovation);
         Subtask roomRenovationSubtask1 =
@@ -107,7 +107,7 @@ public class InMemoryHistoryMemoryTest {
     }
 
     @Test
-    public void subtaskShouldBeDeletedByID(){
+    public void subtaskShouldBeDeletedByID() {
         Epic roomRenovation = new Epic("Сделать ремонт в комнате", "Управиться за 10 дней");
         taskManager.addEpic(roomRenovation);
 

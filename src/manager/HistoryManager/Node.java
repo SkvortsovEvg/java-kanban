@@ -2,7 +2,7 @@ package manager.HistoryManager;
 
 import task.Task;
 
-class Node{
+class Node {
     private Task task;
     private Node next;
     private Node prev;

@@ -88,7 +88,7 @@ public class Main {
 
         System.out.println("\n\n\nВыводим историю просмотров:");
         for (Task task : inMemoryTaskManager.getHistory()) {
-            System.out.println(task+"\n===============");
+            System.out.println(task + "\n===============");
         }
     }
 }
