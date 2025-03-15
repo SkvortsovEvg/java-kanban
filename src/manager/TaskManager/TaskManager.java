@@ -30,6 +30,8 @@ public interface TaskManager {
 
     Epic deleteEpicById(int id);
 
+    void deleteSubtaskById(int id);
+
     Subtask updateSubtask(Subtask subtask);
 
     Task getTaskById(int id);

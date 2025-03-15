@@ -1,7 +1,5 @@
-import enums.Status;
 import manager.Managers;
 import manager.TaskManager.InMemoryTaskManager;
-import manager.TaskManager.TaskManager;
 import task.Epic;
 import task.Subtask;
 import task.Task;
@@ -13,7 +11,9 @@ public class Main {
     public static void main(String[] args) {
         addTasks();
         printAllTasks();
-        printViewHistory();
+        System.out.println("\n============================================================\n");
+        //printAllTasks();
+        //printViewHistory();
     }
 
     private static void addTasks() {
@@ -21,13 +21,8 @@ public class Main {
         Task cleanFloor = new Task("Пропылесосить полы", "Попробовать робота-пылесоса");
         inMemoryTaskManager.addTask(cleanFloor);
 
-        Task washFloor = new Task(cleanFloor.getId(),
-                "Помыть полы",
-                "Используем СУПЕР-средство",
-                Status.IN_PROGRESS);
-        inMemoryTaskManager.updateTask(washFloor);
-
-        inMemoryTaskManager.addTask(new Task("Купить фрукты", "Яблоки - 1 кг, Груши - 1 кг"));
+        Task cleanWindows = new Task("Помыть окна", "Чище-чище)))");
+        inMemoryTaskManager.addTask(cleanWindows);
 
         Epic roomRenovation = new Epic("Сделать ремонт в комнате", "Управиться за 10 дней");
         inMemoryTaskManager.addEpic(roomRenovation);
@@ -40,12 +35,19 @@ public class Main {
                 new Subtask("Собрать комод",
                         "Лучше слева от входа",
                         roomRenovation.getId());
+        Subtask roomRenovationSubtask3 =
+                new Subtask("Сменить входную дверь",
+                        "Не знаю какую только",
+                        roomRenovation.getId());
 
         inMemoryTaskManager.addSubtask(roomRenovationSubtask1);
         inMemoryTaskManager.addSubtask(roomRenovationSubtask2);
+        inMemoryTaskManager.addSubtask(roomRenovationSubtask3);
 
-        roomRenovationSubtask1.setStatus(Status.DONE);
-        inMemoryTaskManager.updateSubtask(roomRenovationSubtask1);
+
+        Epic paintWalls = new Epic("Покрасить стены на улице", "В серый цвет, краску не выбрал пока");
+        inMemoryTaskManager.addEpic(paintWalls);
+
     }
 
     private static void printAllTasks() {
@@ -84,7 +86,7 @@ public class Main {
 
         System.out.println("\n\n\nВыводим историю просмотров:");
         for (Task task : inMemoryTaskManager.getHistory()) {
-            System.out.println(task+"\n===============");
+            System.out.println(task + "\n===============");
         }
     }
 }

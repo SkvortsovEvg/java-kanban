@@ -145,19 +145,19 @@ public class InMemoryTaskManagerTest {
         taskManager.addEpic(roomRenovation);
         taskManager.addSubtask(
                 new Subtask("Покрасить стены",
-                "Что-то светлое или немного желтое",
-                roomRenovation.getId()));
+                        "Что-то светлое или немного желтое",
+                        roomRenovation.getId()));
         taskManager.addSubtask(
                 new Subtask("Собрать комод",
-                "Лучше слева от входа",
-                roomRenovation.getId()));
+                        "Лучше слева от входа",
+                        roomRenovation.getId()));
         taskManager.deleteSubtasks();
         List<Subtask> subtasks = taskManager.getSubtasks();
         assertTrue(subtasks.isEmpty(), "После удаления подзадач список должен быть пуст!");
     }
 
     @Test
-    public void deleteTaskByIdShouldReturnNullIfKeyIsMissing(){
+    public void deleteTaskByIdShouldReturnNullIfKeyIsMissing() {
         taskManager.addTask(
                 new Task(1,
                         "Замечательная история",
@@ -168,23 +168,24 @@ public class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void deleteEpicByIdShouldReturnNullIfKeyIsMissing(){
+    public void deleteEpicByIdShouldReturnNullIfKeyIsMissing() {
         taskManager.addEpic(new Epic(1,
                 "Сделать ремонт в комнате",
                 "Управиться за 10 дней",
                 Status.IN_PROGRESS));
         taskManager.deleteEpicById(1);
         assertNull(taskManager.deleteTaskById(1));
+        int i = 0;
     }
 
     @Test
-    public void deleteSubtaskByIdShouldReturnNullIfKeyIsMissing(){
+    public void deleteSubtaskByIdShouldReturnNullIfKeyIsMissing() {
         Epic roomRenovation = new Epic("Сделать ремонт в комнате", "Управиться за 10 дней");
         taskManager.addEpic(roomRenovation);
         taskManager.addSubtask(
                 new Subtask("Покрасить стены",
-                "Что-то светлое или немного желтое",
-                roomRenovation.getId()));
+                        "Что-то светлое или немного желтое",
+                        roomRenovation.getId()));
         taskManager.addSubtask(
                 new Subtask("Собрать комод",
                         "Лучше слева от входа",
@@ -193,7 +194,7 @@ public class InMemoryTaskManagerTest {
     }
 
     @Test
-    public void TaskCreatedAndTaskAddedShouldHaveSameVariables(){
+    public void taskCreatedAndTaskAddedShouldHaveSameVariables() {
         Task task = new Task(1, "Скоро будут чистые полы", "Не знаю что писать", Status.DONE);
         taskManager.addTask(task);
         List<Task> list = taskManager.getTasks();
@@ -203,4 +204,5 @@ public class InMemoryTaskManagerTest {
         assertEquals(actual.getDescription(), task.getDescription());
         assertEquals(actual.getStatus(), task.getStatus());
     }
+
 }

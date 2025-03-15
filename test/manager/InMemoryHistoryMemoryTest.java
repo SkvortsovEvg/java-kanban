@@ -11,10 +11,13 @@ import task.Task;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import java.util.Random;
 
 public class InMemoryHistoryMemoryTest {
     private TaskManager taskManager;
-    private final static int MAX_HISTORY_STORAGE = 10;
+    public static final int MIN_MANAGER_SIZE = 20;
+    public static final int MAX_MANAGER_SIZE = 100;
+    public static final int SUBTASKS_SIZE = 2;
 
     @BeforeEach
     public void beforeEach() {
@@ -22,8 +25,12 @@ public class InMemoryHistoryMemoryTest {
     }
 
     @Test
-    public void getHistoryShouldReturnListOf10Tasks() {
-        for (int i = 0; i < 20; i++) {
+    public void getHistoryShouldReturnListOfRandomCountTasks() {
+        Random random = new Random();
+        int randomSizeInHistoryManager
+                = random.nextInt(MAX_MANAGER_SIZE - MIN_MANAGER_SIZE) + MIN_MANAGER_SIZE;
+
+        for (int i = 0; i < randomSizeInHistoryManager; i++) {
             taskManager.addTask(new Task("Some name " + (i + 1), "Some description " + (i + 1)));
         }
         List<Task> tasks = taskManager.getTasks();
@@ -31,12 +38,13 @@ public class InMemoryHistoryMemoryTest {
             taskManager.getTaskById(task.getId());
         }
         List<Task> history = taskManager.getHistory();
-        assertEquals(MAX_HISTORY_STORAGE, history.size(),
-                "Помните, что история должна содержать максимум " + MAX_HISTORY_STORAGE + " задач.");
+        assertEquals(randomSizeInHistoryManager, history.size(),
+                "Помните, что история должна содержать произвольное количество задач "
+                        + "(в данный момент " + randomSizeInHistoryManager + " задач(-и,-у)).");
     }
 
     @Test
-    public void getHistoryShouldReturnOldTaskAfterUpdate(){
+    public void getHistoryShouldReturnOldTaskAfterUpdate() {
         Task cleanFloor = new Task("Пропылесосить полы", "Попробовать робота-пылесоса");
         taskManager.addTask(cleanFloor);
         taskManager.getTaskById(cleanFloor.getId());
@@ -56,15 +64,15 @@ public class InMemoryHistoryMemoryTest {
     }
 
     @Test
-    public void getHistoryShouldReturnOldEpicAfterUpdate(){
+    public void getHistoryShouldReturnOldEpicAfterUpdate() {
         Epic roomRenovation = new Epic("Сделать ремонт в комнате", "Управиться за 10 дней");
         taskManager.addEpic(roomRenovation);
         taskManager.getEpicById(roomRenovation.getId());
         taskManager.updateEpic(
                 new Epic(roomRenovation.getId(),
-                "Изменили на новое имя",
-                "Изменили описание",
-                Status.IN_PROGRESS));
+                        "Изменили на новое имя",
+                        "Изменили описание",
+                        Status.IN_PROGRESS));
         List<Task> epicHistory = taskManager.getHistory();
         Epic oldEpic = (Epic) epicHistory.getFirst();
         assertEquals(roomRenovation.getName(), oldEpic.getName(),
@@ -75,7 +83,7 @@ public class InMemoryHistoryMemoryTest {
     }
 
     @Test
-    public void getHistoryShouldReturnOldSubtaskAfterUpdate(){
+    public void getHistoryShouldReturnOldSubtaskAfterUpdate() {
         Epic roomRenovation = new Epic("Сделать ремонт в комнате", "Управиться за 10 дней");
         taskManager.addEpic(roomRenovation);
         Subtask roomRenovationSubtask1 =
@@ -96,5 +104,30 @@ public class InMemoryHistoryMemoryTest {
                 "В истории не сохранилась старая версия эпика");
         assertEquals(roomRenovationSubtask1.getDescription(), oldSubtask.getDescription(),
                 "В истории не сохранилась старая версия эпика");
+    }
+
+    @Test
+    public void subtaskShouldBeDeletedByID() {
+        Epic roomRenovation = new Epic("Сделать ремонт в комнате", "Управиться за 10 дней");
+        taskManager.addEpic(roomRenovation);
+
+        Subtask roomRenovationSubtask1 =
+                new Subtask("Покрасить стены",
+                        "Что-то светлое или немного желтое",
+                        roomRenovation.getId());
+        Subtask roomRenovationSubtask2 =
+                new Subtask("Собрать комод",
+                        "Лучше слева от входа",
+                        roomRenovation.getId());
+        Subtask roomRenovationSubtask3 =
+                new Subtask("Сменить входную дверь",
+                        "Не знаю на какую только",
+                        roomRenovation.getId());
+
+        taskManager.addSubtask(roomRenovationSubtask1);
+        taskManager.addSubtask(roomRenovationSubtask2);
+        taskManager.addSubtask(roomRenovationSubtask3);
+        taskManager.deleteSubtaskById(roomRenovationSubtask1.getId());
+        assertEquals(SUBTASKS_SIZE, taskManager.getSubtasks().size());
     }
 }
