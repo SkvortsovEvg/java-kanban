@@ -1,6 +1,6 @@
 package manager;
 
-import enums.Status;
+import enums.TaskStatus.Status;
 import manager.TaskManager.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,13 +21,13 @@ public class InMemoryTaskManagerTest {
 
     @BeforeEach
     public void beforeEach() {
-        taskManager = Managers.getDefault();
+        taskManager = Managers.getDefault(Managers.getDefaultHistory());
     }
 
     @Test
     public void addNewTask() {
-        Task task = taskManager.addTask(
-                new Task("Новое задание", "Новое описание к данному заданию"));
+        Task task = new Task("Новое задание", "Новое описание к данному заданию");
+        taskManager.addTask(task);
 
         Task savedTask = taskManager.getTaskById(task.getId());
         assertNotNull(savedTask, "Данная задача не найдена!");
@@ -41,20 +41,26 @@ public class InMemoryTaskManagerTest {
 
     @Test
     public void addNewEpicAndSubtasks() {
-        Epic roomRenovation = taskManager.addEpic(
-                new Epic("Сделать ремонт в комнате", "Управиться за 10 дней"));
-        Subtask roomRenovationSubtask1 = taskManager.addSubtask(
-                new Subtask("Покрасить стены",
-                        "Что-то светлое или немного желтое",
-                        roomRenovation.getId()));
-        Subtask roomRenovationSubtask2 = taskManager.addSubtask(
-                new Subtask("Собрать комод",
-                        "Лучше слева от входа",
-                        roomRenovation.getId()));
-        Subtask roomRenovationSubtask3 = taskManager.addSubtask(
-                new Subtask("Купить кресла",
-                        "Лучше посветлее, посмотри в каталоге",
-                        roomRenovation.getId()));
+        Epic roomRenovation = new Epic("Сделать ремонт в комнате", "Управиться за 10 дней");
+        taskManager.addEpic(roomRenovation);
+
+        Subtask roomRenovationSubtask1 = new Subtask(
+                "Покрасить стены",
+                "Что-то светлое или немного желтое",
+                roomRenovation.getId());
+        taskManager.addSubtask(roomRenovationSubtask1);
+
+        Subtask roomRenovationSubtask2 = new Subtask(
+                "Собрать комод",
+                "Лучше слева от входа",
+                roomRenovation.getId());
+        taskManager.addSubtask(roomRenovationSubtask2);
+
+        Subtask roomRenovationSubtask3 = new Subtask(
+                "Купить кресла",
+                "Лучше посветлее, посмотри в каталоге",
+                roomRenovation.getId());
+        taskManager.addSubtask(roomRenovationSubtask3);
 
         Epic savedEpic = taskManager.getEpicById(roomRenovation.getId());
         Subtask savedRoomRenovationSubtask1 = taskManager.getSubtaskById(roomRenovationSubtask1.getId());
@@ -205,4 +211,58 @@ public class InMemoryTaskManagerTest {
         assertEquals(actual.getStatus(), task.getStatus());
     }
 
+    @Test
+    public void shouldDeleteAllTasks() {
+        Task task1 = new Task(1, "Скоро будут чистые полы", "Не знаю что писать", Status.DONE);
+        taskManager.addTask(task1);
+        Task task2 = new Task(2,
+                "Замечательная история",
+                "Замечательное описание",
+                Status.NEW);
+        taskManager.addTask(task2);
+        taskManager.deleteAllTasks();
+        int sizeOfMapTasksAfter = taskManager.getAllTasks().size();
+        assertEquals(0, sizeOfMapTasksAfter, "deleteAllTasks работает неверно!");
+    }
+
+    @Test
+    public void shouldDeleteAllEpics() {
+        Epic roomRenovation =
+                new Epic(1, "Сделать ремонт в комнате", "Управиться за 10 дней", Status.NEW);
+        taskManager.addEpic(roomRenovation);
+
+        Epic paintWalls =
+                new Epic(2, "Покрасить стены на улице", "В серый цвет", Status.NEW);
+        taskManager.addEpic(paintWalls);
+        taskManager.deleteAllEpics();
+        int sizeOfMapEpicAfter = taskManager.getAllEpics().size();
+        assertEquals(0, sizeOfMapEpicAfter, "deleteAllEpics работает неправильно!");
+    }
+
+    @Test
+    public void shouldDeleteAllSubtasks() {
+        Epic roomRenovation =
+                new Epic(1, "Сделать ремонт в комнате", "Управиться за 10 дней", Status.NEW);
+        taskManager.addEpic(roomRenovation);
+
+        Subtask roomRenovationSubtask1 =
+                new Subtask("Покрасить стены",
+                        "Что-то светлое или немного желтое",
+                        roomRenovation.getId());
+        Subtask roomRenovationSubtask2 =
+                new Subtask("Собрать комод",
+                        "Лучше слева от входа",
+                        roomRenovation.getId());
+        Subtask roomRenovationSubtask3 =
+                new Subtask("Сменить входную дверь",
+                        "Не знаю какую только",
+                        roomRenovation.getId());
+
+        taskManager.addSubtask(roomRenovationSubtask1);
+        taskManager.addSubtask(roomRenovationSubtask2);
+        taskManager.addSubtask(roomRenovationSubtask3);
+        taskManager.deleteAllSubtasks();
+        int sizeOfMapSubtasksAfter = taskManager.getAllSubtasks().size();
+        assertEquals(0, sizeOfMapSubtasksAfter, "deleteAllSubtasks работает неверно!");
+    }
 }

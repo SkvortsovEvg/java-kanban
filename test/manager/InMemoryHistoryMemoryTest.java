@@ -1,6 +1,6 @@
 package manager;
 
-import enums.Status;
+import enums.TaskStatus.Status;
 import manager.TaskManager.TaskManager;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +21,7 @@ public class InMemoryHistoryMemoryTest {
 
     @BeforeEach
     public void beforeEach() {
-        taskManager = Managers.getDefault();
+        taskManager = Managers.getDefault(Managers.getDefaultHistory());
     }
 
     @Test
