@@ -41,7 +41,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Subtask addSubtask(Subtask subtask) { //TODO: addSubtask
+    public Subtask addSubtask(Subtask subtask) {
         subtask.setId(getNextID());
         Epic epic = epics.get(subtask.getEpicID());
         epic.addSubtask(subtask);
@@ -61,7 +61,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic updateEpic(Epic epic) { //TODO: updateEpic
+    public Epic updateEpic(Epic epic) {
         Integer epicID = epic.getId();
         if (epicID == null || !epics.containsKey(epicID)) {
             return null;
