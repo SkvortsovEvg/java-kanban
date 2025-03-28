@@ -130,7 +130,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public void addTaskToManagerSave(Task task){
+    public void addTaskToManagerSave(Task task) {
         if (task instanceof Epic epic) {
             addEpic(epic);
             return;
@@ -142,7 +142,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         }
     }
 
-    public void addTaskToManagerTest(Task task){
+    public void addTaskToManagerTest(Task task) {
         if (task instanceof Epic epic) {
             super.addEpic(epic);
             return;
