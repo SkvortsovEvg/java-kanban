@@ -27,7 +27,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     public void loadFromFile(File file) {
-        String header_csv = HEADER_CSV_FILE.substring(0, HEADER_CSV_FILE.length() - 1);
+        String headerCSV = HEADER_CSV_FILE.substring(0, HEADER_CSV_FILE.length() - 1);
         StringBuilder resultSB = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new FileReader(file, StandardCharsets.UTF_8))) {
             String line;
@@ -36,7 +36,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (line.isEmpty()) {
                     break;
                 }
-                if (line.equals(header_csv)) {
+                if (line.equals(headerCSV)) {
                     continue;
                 }
                 resultSB.append(line).append("\n");
