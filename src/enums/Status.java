@@ -1,4 +1,4 @@
-package enums.TaskStatus;
+package enums;
 
 public enum Status {
     NEW,

@@ -4,17 +4,17 @@ import task.Epic;
 import task.Subtask;
 import task.Task;
 
-
+import java.util.ArrayList;
 import java.util.List;
 
 public interface TaskManager {
     int getNextID();
 
-    void addTask(Task task);
+    Task addTask(Task task);
 
-    void addEpic(Epic epic);
+    Epic addEpic(Epic epic);
 
-    void addSubtask(Subtask subtask);
+    Subtask addSubtask(Subtask subtask);
 
     Task updateTask(Task task);
 
@@ -26,25 +26,11 @@ public interface TaskManager {
 
     void deleteSubtasks();
 
-    void deleteTaskById(int id);
+    Task deleteTaskById(int id);
 
     Epic deleteEpicById(int id);
 
-    void deleteSubtaskById(int id);
-
-    void deleteAllTasks();
-
-    void deleteAllSubtasks();
-
-    void deleteAllEpics();
-
     Subtask updateSubtask(Subtask subtask);
-
-    List<Task> getAllTasks();
-
-    List<Subtask> getAllSubtasks();
-
-    List<Epic> getAllEpics();
 
     Task getTaskById(int id);
 
@@ -52,21 +38,15 @@ public interface TaskManager {
 
     Subtask getSubtaskById(int id);
 
-    List<Subtask> getEpicSubtasks(Epic epic);
+    ArrayList<Subtask> getEpicSubtasks(Epic epic);
 
-    List<Task> getTasks();
+    ArrayList<Task> getTasks();
 
-    List<Epic> getEpics();
+    ArrayList<Epic> getEpics();
 
-    List<Subtask> getSubtasks();
+    ArrayList<Subtask> getSubtasks();
 
-    List<Subtask> getTasksSubtasks(Epic epic);
+    ArrayList<Subtask> getTasksSubtasks(Epic epic);
 
     List<Task> getHistory();
-
-    void setEpicDateTime(int epicId);
-
-    List<Task> getPrioritizedTasks();
-
-    void validate(Task task);
 }
