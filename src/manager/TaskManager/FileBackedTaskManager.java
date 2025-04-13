@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
-    private final File FILE = new File("./resources/data.csv");
+    private static final File FILE = new File("./resources/data.csv");
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     private static final String FIRST_LINE = "id,type,name,status,description,startTime,endTime,duration,epic";
 
