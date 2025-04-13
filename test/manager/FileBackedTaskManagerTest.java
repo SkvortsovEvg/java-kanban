@@ -1,12 +1,10 @@
 package manager;
 
 import manager.TaskManager.FileBackedTaskManager;
-import manager.TaskManager.exceptions.ManagerSaveException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import task.Task;
 
-import java.io.*;
 import java.io.File;
 import java.util.List;
 
@@ -17,11 +15,7 @@ public class FileBackedTaskManagerTest extends TaskManagerTest<FileBackedTaskMan
 
     @BeforeEach
     void setUp() {
-        try {
-            file = File.createTempFile("data_", ".csv");
-        } catch (IOException e) {
-            throw new ManagerSaveException("Не могу создать временный файл");
-        }
+        file = new File("./resources/data.csv");
         super.taskManager = new FileBackedTaskManager();
         initTasks();
         taskManager.getTaskById(1);
