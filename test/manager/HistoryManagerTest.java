@@ -27,11 +27,11 @@ class HistoryManagerTest {
     @BeforeEach
     void setUp() {
         historyManager = new InMemoryHistoryManager();
-        task = new Task(1,"Задача", "description1", Status.NEW, DATE, 1000L);
+        task = new Task(1, "Задача", "description1", Status.NEW, DATE, 1000L);
         epic = new Epic(2, "Эпик", "description3", Status.NEW);
         subtask = new Subtask(3, "Подзадача", "description3", 2, Status.NEW,
                 DATE.plusDays(1), 1000L);
-        subtask2 = new Subtask(4, "Подзадача", "description3", 2,  Status.NEW,
+        subtask2 = new Subtask(4, "Подзадача", "description3", 2, Status.NEW,
                 DATE.plusDays(2), 1000L);
     }
 

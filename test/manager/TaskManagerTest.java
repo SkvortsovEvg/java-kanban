@@ -31,7 +31,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
         subtask3 = new Subtask(3,
                 "Подзадача",
                 "description3",
-                 EPIC_ID,
+                EPIC_ID,
                 Status.NEW,
                 DATE.plusDays(1),
                 1000L);
@@ -99,7 +99,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
     void checkEpicStatus() {
         Epic expectedEpicOfSubtask = taskManager.getEpicById(EPIC_ID);
         //проверить статус эпика ин прогресс если сабтаски новые и дан
-        Subtask updateSubtask4 = new Subtask(4, "Подзадача", "description4",  EPIC_ID, Status.DONE,
+        Subtask updateSubtask4 = new Subtask(4, "Подзадача", "description4", EPIC_ID, Status.DONE,
                 DATE.plusDays(2), 1000L);
         taskManager.updateSubtask(updateSubtask4);
         assertEquals(Status.IN_PROGRESS, expectedEpicOfSubtask.getStatus(), "Статус не IN_PROGRESS");
@@ -184,7 +184,7 @@ public abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     void validate() {
-        Task task1 = new Task(1,"Задача1", "description1", Status.NEW, DATE, 1000L);
+        Task task1 = new Task(1, "Задача1", "description1", Status.NEW, DATE, 1000L);
         Task task2 = new Task(2, "Задача2", "description2", Status.NEW, DATE, 1000L);
 
         CollisionTaskException exception = assertThrows(CollisionTaskException.class,
