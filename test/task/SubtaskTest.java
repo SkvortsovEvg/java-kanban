@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class SubtaskTest {
+
     @Test
     public void SubtasksWithEqualIdShouldBeEqual() {
         Subtask subtask1 = new Subtask(5, "Купить хлеб", "В Радеже", Status.NEW, 5);
