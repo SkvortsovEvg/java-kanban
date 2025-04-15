@@ -124,7 +124,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private String toString(Task task) {
         String[] toJoin = {
                 Integer.toString(task.getId()),
-                getType(task).toString(),
+                task.getTaskType().toString(),
                 task.getName(),
                 task.getStatus().toString(),
                 task.getDescription(),
@@ -136,18 +136,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         return String.join(",", toJoin);
     }
 
-    private Type getType(Task task) {
-        if (task instanceof Epic) {
-            return Type.EPIC;
-        } else if (task instanceof Subtask) {
-            return Type.SUBTASK;
-        } else {
-            return Type.TASK;
-        }
-    }
-
     private String getParentId(Task task) {
-        if (task instanceof Subtask) {
+        if (task.getTaskType() == Type.SUBTASK) {
             return Integer.toString(((Subtask) task).getEpicID());
         }
         return "";
