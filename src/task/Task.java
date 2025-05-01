@@ -2,6 +2,7 @@ package task;
 
 import enums.TaskStatus.Status;
 import enums.TaskType.Type;
+import http.adapters.LocalDateAdapter;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,10 +10,10 @@ import java.time.format.DateTimeFormatter;
 public class Task {
     public static final LocalDateTime START_TIME
             = LocalDateTime.of(2000, 1, 1, 0, 0);
-    protected final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
+    protected final DateTimeFormatter formatter = LocalDateAdapter.FORMATTER;
     private int id = 1;
     private final String name;
-    private final String description;
+    private String description;
     private Status status = Status.NEW;
     private LocalDateTime startTime = START_TIME;
     private long duration = 0L;
@@ -64,6 +65,10 @@ public class Task {
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Status getStatus() {

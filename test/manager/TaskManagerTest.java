@@ -2,7 +2,7 @@ package manager;
 
 import enums.TaskStatus.Status;
 import manager.TaskManager.TaskManager;
-import manager.TaskManager.exceptions.CollisionTaskException;
+import exceptions.CollisionTaskException;
 import org.junit.jupiter.api.Test;
 import task.Epic;
 import task.Subtask;

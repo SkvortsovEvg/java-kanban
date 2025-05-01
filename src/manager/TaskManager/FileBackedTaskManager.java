@@ -3,10 +3,11 @@ package manager.TaskManager;
 import enums.TaskStatus.Status;
 import enums.TaskType.Type;
 import manager.HistoryManager.HistoryManager;
-import manager.TaskManager.exceptions.ManagerSaveException;
+import exceptions.ManagerSaveException;
 import task.Epic;
 import task.Subtask;
 import task.Task;
+import http.adapters.LocalDateAdapter;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -20,8 +21,8 @@ import java.util.stream.Collectors;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
     private static final File FILE = new File("./resources/data.csv");
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
     private static final String FIRST_LINE = "id,type,name,status,description,startTime,endTime,duration,epic";
+    private static final DateTimeFormatter formatter = LocalDateAdapter.FORMATTER;
 
     public FileBackedTaskManager() {
     }
