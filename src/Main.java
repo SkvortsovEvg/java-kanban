@@ -1,5 +1,5 @@
 import task.Epic;
-import task.SubTask;
+import task.Subtask;
 import task.Task;
 import enums.TaskStatus;
 import managers.Managers;
@@ -18,16 +18,16 @@ public class Main {
         Epic epic = new Epic("Новый эпик ", TaskStatus.NEW, "описание");
         int epicId = taskManager.addNewEpic(epic);
 
-        SubTask subtask = new SubTask("подзадача1", TaskStatus.IN_PROGRESS, "sub1", epic.getId());
+        Subtask subtask = new Subtask("подзадача1", TaskStatus.IN_PROGRESS, "sub1", epic.getId());
         taskManager.addNewSubTask(subtask);
 
-        taskManager.addNewSubTask(new SubTask("подзадача2", TaskStatus.NEW, "sub2", epicId));
+        taskManager.addNewSubTask(new Subtask("подзадача2", TaskStatus.NEW, "sub2", epicId));
         taskManager.updateEpic(epic);
 
         Epic epic2 = new Epic("Новый эпик 2", TaskStatus.NEW, "описание");
         int epicId2 = taskManager.addNewEpic(epic2);
 
-        SubTask subtask2 = new SubTask("Новый subtask", TaskStatus.NEW, "описание", epicId2);
+        Subtask subtask2 = new Subtask("Новый subtask", TaskStatus.NEW, "описание", epicId2);
         int subtaskId2 = taskManager.addNewSubTask(subtask2);
         Task taskUseless = taskManager.getTask(taskId); // task@1 in history
         Task epicUseless = taskManager.getEpic(epicId2); // Epic{subTasks=[SubTask@7], status=NEW} in history
@@ -53,7 +53,7 @@ public class Main {
             }
         }
         System.out.println("\nПодзадачи:");
-        for (Map.Entry<Integer, SubTask> subtask : manager.getSubTasks().entrySet()) {
+        for (Map.Entry<Integer, Subtask> subtask : manager.getSubTasks().entrySet()) {
             System.out.println("\t" + subtask);
         }
 

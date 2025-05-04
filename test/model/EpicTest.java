@@ -23,8 +23,8 @@ class EpicTest {
         assertEquals(taskExpected, task, "Эпики должны совпадать");
     }
 
-    protected SubTask newSubTask(TaskStatus status, Epic epic) {
-        return new SubTask("Test", status, "Test description", epic.getId());
+    protected Subtask newSubTask(TaskStatus status, Epic epic) {
+        return new Subtask("Test", status, "Test description", epic.getId());
     }
 
     @Test
@@ -76,13 +76,13 @@ class EpicTest {
     @Test
     void epicTime() {
         Epic epic = new Epic("name", TaskStatus.NEW, "desc");
-        SubTask s = newSubTask(TaskStatus.IN_PROGRESS, epic);
+        Subtask s = newSubTask(TaskStatus.IN_PROGRESS, epic);
         LocalDateTime time = LocalDateTime.now();
         s.setStartTime(time);
         s.setDuration(Duration.ofMinutes(15));
         epic.addSubTask(s);
 
-        SubTask s2 = newSubTask(TaskStatus.IN_PROGRESS, epic);
+        Subtask s2 = newSubTask(TaskStatus.IN_PROGRESS, epic);
         s2.setStartTime(time);
         s2.setDuration(Duration.ofMinutes(15));
         epic.addSubTask(s2);

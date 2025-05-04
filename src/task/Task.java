@@ -121,7 +121,7 @@ public class Task {
             }
             case SUBTASK -> {
                 int epic = Integer.parseInt(columns[7]);
-                SubTask t = new SubTask(name, status, description, epic, startTime, duration);
+                Subtask t = new Subtask(name, status, description, epic, startTime, duration);
                 t.setId(id);
                 yield t;
             }

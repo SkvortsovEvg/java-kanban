@@ -1,7 +1,7 @@
 package managers.TaskManager;
 
 import task.Epic;
-import task.SubTask;
+import task.Subtask;
 import task.Task;
 
 import java.util.ArrayList;
@@ -28,13 +28,13 @@ public interface TaskManager {
 
     void updateEpic(Epic epic);
 
-    ArrayList<SubTask> getEpicSubTasks(int id);
+    ArrayList<Subtask> getEpicSubTasks(int id);
 
-    int addNewSubTask(SubTask task);
+    int addNewSubTask(Subtask task);
 
-    SubTask getSubTask(int id);
+    Subtask getSubTask(int id);
 
-    void updateSubTask(SubTask subTask);
+    void updateSubTask(Subtask subTask);
 
     void deleteSubTask(int id);
 
@@ -52,7 +52,7 @@ public interface TaskManager {
 
     HashMap<Integer, Epic> getEpics();
 
-    HashMap<Integer, SubTask> getSubTasks();
+    HashMap<Integer, Subtask> getSubTasks();
 
     TreeSet<Task> getPrioritizedTasks();
 }

@@ -5,24 +5,24 @@ import enums.TaskStatus;
 import java.time.Duration;
 import java.time.LocalDateTime;
 
-public class SubTask extends Task {
+public class Subtask extends Task {
 
     private int epicId;
 
-    public SubTask(String name, TaskStatus status, String description) {
+    public Subtask(String name, TaskStatus status, String description) {
         super(name, status, description);
     }
 
-    public SubTask(String name, TaskStatus status, String description, LocalDateTime startTime, Duration duration) {
+    public Subtask(String name, TaskStatus status, String description, LocalDateTime startTime, Duration duration) {
         super(name, status, description, startTime, duration);
     }
 
-    public SubTask(String name, TaskStatus status, String description, int epicId) {
+    public Subtask(String name, TaskStatus status, String description, int epicId) {
         super(name, status, description);
         this.epicId = epicId;
     }
 
-    public SubTask(String name, TaskStatus status, String description, int epicId, LocalDateTime startTime, Duration duration) {
+    public Subtask(String name, TaskStatus status, String description, int epicId, LocalDateTime startTime, Duration duration) {
         super(name, status, description, startTime, duration);
         this.epicId = epicId;
     }
@@ -36,8 +36,8 @@ public class SubTask extends Task {
     }
 
     @Override
-    public SubTask clone() {
-        SubTask task = new SubTask(getName(), getStatus(), getDescription(), epicId);
+    public Subtask clone() {
+        Subtask task = new Subtask(getName(), getStatus(), getDescription(), epicId);
         task.setId(getId());
         return task;
     }

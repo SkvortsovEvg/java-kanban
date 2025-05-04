@@ -3,7 +3,7 @@ package service;
 import exception.ManagerOverlappingException;
 import managers.TaskManager.TaskManager;
 import task.Epic;
-import task.SubTask;
+import task.Subtask;
 import task.Task;
 import enums.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,7 +33,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         Epic epic = newEpic();
         taskManager.addNewEpic(epic);
 
-        SubTask subTask = newSubTask(epic);
+        Subtask subTask = newSubTask(epic);
         taskManager.addNewSubTask(subTask);
     }
 
@@ -45,8 +45,8 @@ abstract class TaskManagerTest<T extends TaskManager> {
         return new Epic("Test", TaskStatus.NEW, "Test description");
     }
 
-    protected SubTask newSubTask(Epic epic) {
-        return new SubTask("Test", TaskStatus.NEW, "Test description", epic.getId());
+    protected Subtask newSubTask(Epic epic) {
+        return new Subtask("Test", TaskStatus.NEW, "Test description", epic.getId());
     }
 
     @Test
@@ -71,7 +71,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         Epic epic = newEpic();
         int epicId = taskManager.addNewEpic(epic);
 
-        SubTask task = newSubTask(epic);
+        Subtask task = newSubTask(epic);
         final int taskId = taskManager.addNewSubTask(task);
 
         final Task savedTask = taskManager.getSubTask(taskId);
@@ -79,7 +79,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertNotNull(savedTask, "Задача не найдена.");
         assertEquals(task, savedTask, "Задачи не совпадают.");
 
-        final HashMap<Integer, SubTask> tasks = taskManager.getSubTasks();
+        final HashMap<Integer, Subtask> tasks = taskManager.getSubTasks();
 
         assertNotNull(tasks, "Задачи не возвращаются.");
         assertEquals(2, tasks.size(), "Неверное количество задач.");
@@ -105,7 +105,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     private void assertManagerMaps(int taskExpected, int subtaskExpected, int epicExpected) {
         final HashMap<Integer, Task> tasks = taskManager.getTasks();
-        final HashMap<Integer, SubTask> subTasks = taskManager.getSubTasks();
+        final HashMap<Integer, Subtask> subTasks = taskManager.getSubTasks();
         final HashMap<Integer, Epic> epics = taskManager.getEpics();
 
         assertEquals(taskExpected, tasks.size(), "Неверное количество tasks.");

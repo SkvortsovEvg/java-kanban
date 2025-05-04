@@ -3,7 +3,7 @@ package http;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import task.Epic;
-import task.SubTask;
+import task.Subtask;
 import task.Task;
 import enums.TaskStatus;
 import org.junit.jupiter.api.AfterEach;
@@ -49,7 +49,7 @@ class HttpTaskServerTest {
     Type epicType = new TypeToken<HashMap<Integer, Epic>>() {
     }.getType();
 
-    Type subtaskType = new TypeToken<HashMap<Integer, SubTask>>() {
+    Type subtaskType = new TypeToken<HashMap<Integer, Subtask>>() {
     }.getType();
 
     Type prioritizedType = new TypeToken<Set<Task>>() {
@@ -123,19 +123,19 @@ class HttpTaskServerTest {
         Epic epic1 = new Epic("description1", "name1");
         sendPOST(EPIC_URL, epic1);
 
-        SubTask subTask11 = new SubTask("subTask11", TaskStatus.NEW, "desc1", LocalDateTime.of(2024, 5, 17, 0, 0), Duration.ofMinutes(1));
-        subTask11.setEpicId(epic1.getId());
-        sendPOST(SUBTASK_URL, subTask11);
+        Subtask subtask11 = new Subtask("subTask11", TaskStatus.NEW, "desc1", LocalDateTime.of(2024, 5, 17, 0, 0), Duration.ofMinutes(1));
+        subtask11.setEpicId(epic1.getId());
+        sendPOST(SUBTASK_URL, subtask11);
 
-        SubTask subTask12 = new SubTask("subTask12", TaskStatus.NEW, "desc2", LocalDateTime.of(2024, 5, 16, 0, 0), Duration.ofMinutes(2));
-        subTask12.setEpicId(epic1.getId());
-        sendPOST(SUBTASK_URL, subTask12);
+        Subtask subtask12 = new Subtask("subTask12", TaskStatus.NEW, "desc2", LocalDateTime.of(2024, 5, 16, 0, 0), Duration.ofMinutes(2));
+        subtask12.setEpicId(epic1.getId());
+        sendPOST(SUBTASK_URL, subtask12);
 
-        SubTask subTask13 = new SubTask("subTask13", TaskStatus.NEW, "desc3", LocalDateTime.of(2024, 5, 15, 0, 0), Duration.ofMinutes(3));
-        subTask13.setEpicId(epic1.getId());
-        sendPOST(SUBTASK_URL, subTask13);
+        Subtask subtask13 = new Subtask("subTask13", TaskStatus.NEW, "desc3", LocalDateTime.of(2024, 5, 15, 0, 0), Duration.ofMinutes(3));
+        subtask13.setEpicId(epic1.getId());
+        sendPOST(SUBTASK_URL, subtask13);
 
-        return new Task[]{epic1, subTask11, subTask12, subTask13};
+        return new Task[]{epic1, subtask11, subtask12, subtask13};
     }
 
     @Test
@@ -215,8 +215,8 @@ class HttpTaskServerTest {
 
         HttpResponse<String> response = sendGET(SUBTASK_URL, 4);
         assertEquals(200, response.statusCode());
-        SubTask responseSubTask = gson.fromJson(response.body(), SubTask.class);
-        assertEquals(tasks[3], responseSubTask);
+        Subtask responseSubtask = gson.fromJson(response.body(), Subtask.class);
+        assertEquals(tasks[3], responseSubtask);
     }
 
     @Test
@@ -229,8 +229,8 @@ class HttpTaskServerTest {
 
         HttpResponse<String> response = sendGET(SUBTASK_URL, 4);
         assertEquals(200, response.statusCode());
-        SubTask updatedSubTask = gson.fromJson(response.body(), SubTask.class);
-        assertEquals("new_desc3", updatedSubTask.getDescription());
+        Subtask updatedSubtask = gson.fromJson(response.body(), Subtask.class);
+        assertEquals("new_desc3", updatedSubtask.getDescription());
     }
 
     @Test
@@ -255,12 +255,12 @@ class HttpTaskServerTest {
     void shouldGetEpics() throws IOException, InterruptedException {
         Epic epic1 = new Epic("description1", "name1");
         Epic epic2 = new Epic("description2", "name2");
-        SubTask subTask11 = new SubTask("subTask11", TaskStatus.NEW, "desc1", LocalDateTime.of(2024, 5, 17, 0, 0), Duration.ofMinutes(1));
-        SubTask subTask21 = new SubTask("subTask21", TaskStatus.NEW, "desc2", LocalDateTime.of(2024, 5, 16, 0, 0), Duration.ofMinutes(2));
+        Subtask subtask11 = new Subtask("subTask11", TaskStatus.NEW, "desc1", LocalDateTime.of(2024, 5, 17, 0, 0), Duration.ofMinutes(1));
+        Subtask subtask21 = new Subtask("subTask21", TaskStatus.NEW, "desc2", LocalDateTime.of(2024, 5, 16, 0, 0), Duration.ofMinutes(2));
         sendPOST(EPIC_URL, epic1);
         sendPOST(EPIC_URL, epic2);
-        sendPOST(SUBTASK_URL, subTask11);
-        sendPOST(SUBTASK_URL, subTask21);
+        sendPOST(SUBTASK_URL, subtask11);
+        sendPOST(SUBTASK_URL, subtask21);
 
         HttpResponse<String> response = sendGET(EPIC_URL, -1);
         assertEquals(200, response.statusCode());
@@ -273,12 +273,12 @@ class HttpTaskServerTest {
     void shouldGetEpicById() throws IOException, InterruptedException {
         Epic epic1 = new Epic("name1", "desc1");
         Epic epic2 = new Epic("name2", "desc2");
-        SubTask subTask11 = new SubTask("subTask11", TaskStatus.NEW, "desc1", LocalDateTime.of(2024, 5, 17, 0, 0), Duration.ofMinutes(1));
-        SubTask subTask21 = new SubTask("subTask21", TaskStatus.NEW, "desc2", LocalDateTime.of(2024, 5, 16, 0, 0), Duration.ofMinutes(2));
+        Subtask subtask11 = new Subtask("subTask11", TaskStatus.NEW, "desc1", LocalDateTime.of(2024, 5, 17, 0, 0), Duration.ofMinutes(1));
+        Subtask subtask21 = new Subtask("subTask21", TaskStatus.NEW, "desc2", LocalDateTime.of(2024, 5, 16, 0, 0), Duration.ofMinutes(2));
         sendPOST(EPIC_URL, epic1);
         sendPOST(EPIC_URL, epic2);
-        sendPOST(SUBTASK_URL, subTask11);
-        sendPOST(SUBTASK_URL, subTask21);
+        sendPOST(SUBTASK_URL, subtask11);
+        sendPOST(SUBTASK_URL, subtask21);
 
         HttpResponse<String> response = sendGET(EPIC_URL, 2);
         assertEquals(200, response.statusCode());

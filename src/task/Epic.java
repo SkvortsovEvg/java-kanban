@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class Epic extends Task {
-    private final ArrayList<SubTask> subTasks = new ArrayList<>();
+    private final ArrayList<Subtask> subtasks = new ArrayList<>();
 
     public Epic(String name, String description) {
         super(name, TaskStatus.NEW, description);
@@ -21,18 +21,18 @@ public class Epic extends Task {
         super(name, status, description, startTime, duration);
     }
 
-    public void addSubTask(SubTask subTask) {
+    public void addSubTask(Subtask subTask) {
         subTask.setEpicId(getId());
-        subTasks.add(subTask);
+        subtasks.add(subTask);
         calculateEpicStatus();
     }
 
-    public ArrayList<SubTask> getSubTasks() {
-        return subTasks;
+    public ArrayList<Subtask> getSubTasks() {
+        return subtasks;
     }
 
-    public void removeTask(SubTask subTask) {
-        subTasks.remove(subTask);
+    public void removeTask(Subtask subTask) {
+        subtasks.remove(subTask);
         calculateEpicStatus();
     }
 
@@ -43,7 +43,7 @@ public class Epic extends Task {
         LocalDateTime first = LocalDateTime.MAX;
         Duration duration = Duration.ZERO;
 
-        for (SubTask sTask : subTasks) {
+        for (Subtask sTask : subtasks) {
             if (first.isAfter(sTask.getStartTime())) {
                 first = sTask.getStartTime();
             }
@@ -75,7 +75,7 @@ public class Epic extends Task {
     public Epic clone() {
         Epic task = new Epic(getName(), getStatus(), getDescription());
         task.setId(getId());
-        for (SubTask t : getSubTasks()) {
+        for (Subtask t : getSubTasks()) {
             task.addSubTask(t);
         }
         task.calculateEpicStatus();
@@ -84,7 +84,7 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        if (subTasks.isEmpty()) {
+        if (subtasks.isEmpty()) {
             return "Epic{"
                     + "id=" + getId()
                     + ", name=\"" + getName()
@@ -98,7 +98,7 @@ public class Epic extends Task {
                     + "id=" + getId()
                     + ", name=\"" + getName()
                     + "\", description=\"" + getDescription()
-                    + "\",\nsubtaskList=" + subTasks
+                    + "\",\nsubtaskList=" + subtasks
                     + ",\nstatus=" + getStatus()
                     + ", startTime=" + getStartTime()
                     + ", duration=" + getDuration()
@@ -111,7 +111,7 @@ public class Epic extends Task {
     public String toCSV() {
         StringBuilder subtasks = new StringBuilder();
         if (!getSubTasks().isEmpty()) {
-            for (SubTask sub : getSubTasks()) {
+            for (Subtask sub : getSubTasks()) {
                 subtasks.append(",").append(sub.getId());
             }
         }

@@ -3,7 +3,7 @@ package http.handlers;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 import exception.ManagerOverlappingException;
-import task.SubTask;
+import task.Subtask;
 import managers.TaskManager.TaskManager;
 
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class SubtaskHandler extends BaseHttpHandler {
         } else {
             try {
                 int id = Integer.parseInt(path[2]);
-                SubTask subtask = taskManager.getSubTask(id);
+                Subtask subtask = taskManager.getSubTask(id);
                 if (subtask != null) {
                     response = gson.toJson(subtask);
                     sendText(httpExchange, response, 200);
@@ -41,7 +41,7 @@ public class SubtaskHandler extends BaseHttpHandler {
             return;
         }
         try {
-            SubTask subtask = gson.fromJson(bodyRequest, SubTask.class);
+            Subtask subtask = gson.fromJson(bodyRequest, Subtask.class);
             if (taskManager.getSubTask(subtask.getId()) != null) {
                 taskManager.updateSubTask(subtask);
                 sendText(httpExchange, "success", 200);
