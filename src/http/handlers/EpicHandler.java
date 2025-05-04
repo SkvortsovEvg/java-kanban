@@ -2,8 +2,8 @@ package http.handlers;
 
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
-import manager.TaskManager.TaskManager;
 import task.Epic;
+import managers.TaskManager.TaskManager;
 
 import java.io.IOException;
 
@@ -19,7 +19,7 @@ public class EpicHandler extends BaseHttpHandler {
         } else if (path.length == 3) {
             try {
                 int id = Integer.parseInt(path[2]);
-                Epic epic = taskManager.getEpicById(id);
+                Epic epic = taskManager.getEpic(id);
                 if (epic != null) {
                     response = gson.toJson(epic);
                     sendText(httpExchange, response, 200);
@@ -32,10 +32,12 @@ public class EpicHandler extends BaseHttpHandler {
         } else if (path.length == 4 && path[3].equals("subtasks")) {
             try {
                 int id = Integer.parseInt(path[2]);
-                Epic epic = taskManager.getEpicById(id);
+                Epic epic = taskManager.getEpic(id);
                 if (epic != null) {
                     response = gson.toJson(epic);
                     sendText(httpExchange, response, 200);
+                } else {
+                    sendNotFound(httpExchange);
                 }
             } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
                 sendNotFound(httpExchange);
@@ -51,11 +53,11 @@ public class EpicHandler extends BaseHttpHandler {
         }
         try {
             Epic epic = gson.fromJson(bodyRequest, Epic.class);
-            if (taskManager.getEpicById(epic.getId()) != null) {
+            if (taskManager.getEpic(epic.getId()) != null) {
                 sendNotFound(httpExchange);
             } else {
-                taskManager.addEpic(epic);
-                sendText(httpExchange, Integer.toString(epic.getId()), 201);
+                int epicId = taskManager.addNewEpic(epic);
+                sendText(httpExchange, Integer.toString(epicId), 201);
             }
         } catch (JsonSyntaxException e) {
             sendNotFound(httpExchange);
@@ -65,7 +67,7 @@ public class EpicHandler extends BaseHttpHandler {
     private void handleDelete(HttpExchange httpExchange, String[] path) throws IOException {
         try {
             int id = Integer.parseInt(path[2]);
-            taskManager.deleteEpicById(id);
+            taskManager.deleteEpic(id);
             sendText(httpExchange, "success", 200);
         } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
             sendNotFound(httpExchange);
@@ -85,4 +87,5 @@ public class EpicHandler extends BaseHttpHandler {
             default -> sendNotFound(httpExchange);
         }
     }
+
 }

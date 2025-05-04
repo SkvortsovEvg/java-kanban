@@ -1,12 +1,12 @@
 package http.handlers;
 
 import com.sun.net.httpserver.HttpExchange;
-import manager.TaskManager.TaskManager;
+import managers.TaskManager.TaskManager;
 
 import java.io.IOException;
-import java.util.logging.Handler;
 
 public class PrioritizedTasksHandler extends BaseHttpHandler {
+
     public PrioritizedTasksHandler(TaskManager taskManager) {
         super(taskManager);
     }

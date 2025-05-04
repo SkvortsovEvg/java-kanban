@@ -1,7 +1,9 @@
-package exceptions;
+package exception;
 
 public class ManagerOverlappingException extends RuntimeException {
+
     public ManagerOverlappingException(final String message) {
         super(message);
     }
+
 }

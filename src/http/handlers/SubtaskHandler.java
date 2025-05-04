@@ -2,25 +2,26 @@ package http.handlers;
 
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
-import exceptions.ManagerOverlappingException;
-import manager.TaskManager.TaskManager;
-import task.Subtask;
+import exception.ManagerOverlappingException;
+import task.SubTask;
+import managers.TaskManager.TaskManager;
 
 import java.io.IOException;
 
-public class SubtaskHandler extends BaseHttpHandler{
+public class SubtaskHandler extends BaseHttpHandler {
+
     public SubtaskHandler(TaskManager taskManager) {
         super(taskManager);
     }
 
     private void handleGet(HttpExchange httpExchange, String[] path) throws IOException {
         if (path.length == 2) {
-            response = gson.toJson(taskManager.getAllSubtasks());
+            response = gson.toJson(taskManager.getSubTasks());
             sendText(httpExchange, response, 200);
         } else {
             try {
                 int id = Integer.parseInt(path[2]);
-                Subtask subtask = taskManager.getSubtaskById(id);
+                SubTask subtask = taskManager.getSubTask(id);
                 if (subtask != null) {
                     response = gson.toJson(subtask);
                     sendText(httpExchange, response, 200);
@@ -40,15 +41,15 @@ public class SubtaskHandler extends BaseHttpHandler{
             return;
         }
         try {
-            Subtask subtask = gson.fromJson(bodyRequest, Subtask.class);
-            if (taskManager.getSubtaskById(subtask.getId()) != null) {
-                taskManager.updateSubtask(subtask);
+            SubTask subtask = gson.fromJson(bodyRequest, SubTask.class);
+            if (taskManager.getSubTask(subtask.getId()) != null) {
+                taskManager.updateSubTask(subtask);
                 sendText(httpExchange, "success", 200);
             } else {
-                taskManager.addSubtask(subtask);
-                sendText(httpExchange, Integer.toString(subtask.getId()), 201);
+                int subtaskId = taskManager.addNewSubTask(subtask);
+                sendText(httpExchange, Integer.toString(subtaskId), 201);
             }
-        } catch (ManagerOverlappingException e) {
+        } catch (ManagerOverlappingException v) {
             sendHasInteractions(httpExchange);
         } catch (JsonSyntaxException e) {
             sendNotFound(httpExchange);
@@ -61,7 +62,7 @@ public class SubtaskHandler extends BaseHttpHandler{
         } else {
             try {
                 int id = Integer.parseInt(path[2]);
-                taskManager.deleteSubtaskById(id);
+                taskManager.deleteSubTask(id);
                 sendText(httpExchange, "success", 200);
             } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
                 sendNotFound(httpExchange);
@@ -82,4 +83,5 @@ public class SubtaskHandler extends BaseHttpHandler{
             default -> sendNotFound(httpExchange);
         }
     }
+
 }

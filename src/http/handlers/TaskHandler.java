@@ -2,13 +2,14 @@ package http.handlers;
 
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
-import exceptions.ManagerOverlappingException;
-import manager.TaskManager.TaskManager;
+import exception.ManagerOverlappingException;
 import task.Task;
+import managers.TaskManager.TaskManager;
 
 import java.io.IOException;
 
 public class TaskHandler extends BaseHttpHandler {
+
     public TaskHandler(TaskManager taskManager) {
         super(taskManager);
     }
@@ -20,7 +21,7 @@ public class TaskHandler extends BaseHttpHandler {
         } else {
             try {
                 int id = Integer.parseInt(path[2]);
-                Task task = taskManager.getTaskById(id);
+                Task task = taskManager.getTask(id);
                 if (task != null) {
                     response = gson.toJson(task);
                     sendText(httpExchange, response, 200);
@@ -41,16 +42,16 @@ public class TaskHandler extends BaseHttpHandler {
         }
         try {
             Task task = gson.fromJson(bodyRequest, Task.class);
-            if (taskManager.getTaskById(task.getId()) != null) {
+            if (taskManager.getTask(task.getId()) != null) {
                 taskManager.updateTask(task);
                 sendText(httpExchange, "success", 201);
             } else {
-                taskManager.addTask(task);
-                sendText(httpExchange, Integer.toString(task.getId()), 201);
+                int taskId = taskManager.addNewTask(task);
+                sendText(httpExchange, Integer.toString(taskId), 201);
             }
-        } catch (ManagerOverlappingException exception) {
+        } catch (ManagerOverlappingException v) {
             sendHasInteractions(httpExchange);
-        } catch (JsonSyntaxException exception) {
+        } catch (JsonSyntaxException e) {
             sendNotFound(httpExchange);
         }
     }
@@ -58,9 +59,9 @@ public class TaskHandler extends BaseHttpHandler {
     private void handleDelete(HttpExchange httpExchange, String[] path) throws IOException {
         try {
             int id = Integer.parseInt(path[2]);
-            taskManager.deleteTaskById(id);
+            taskManager.deleteTask(id);
             sendText(httpExchange, "success", 200);
-        } catch (StringIndexOutOfBoundsException | NumberFormatException exception) {
+        } catch (StringIndexOutOfBoundsException | NumberFormatException e) {
             sendNotFound(httpExchange);
         }
     }
@@ -69,6 +70,7 @@ public class TaskHandler extends BaseHttpHandler {
     public void handle(HttpExchange httpExchange) throws IOException {
         String method = httpExchange.getRequestMethod();
         String[] path = httpExchange.getRequestURI().getPath().split("/");
+
 
         switch (method) {
             case "GET" -> handleGet(httpExchange, path);

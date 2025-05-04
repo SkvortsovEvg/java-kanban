@@ -3,8 +3,8 @@ package http.handlers;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import manager.Managers;
-import manager.TaskManager.TaskManager;
+import managers.Managers;
+import managers.TaskManager.TaskManager;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -23,7 +23,7 @@ public class BaseHttpHandler implements HttpHandler {
     protected void sendText(HttpExchange httpExchange, String response, int statusCode) throws IOException {
         httpExchange.sendResponseHeaders(statusCode, 0);
         httpExchange.getResponseHeaders().add("Content-Type", "application/json;charset=utf-8");
-        httpExchange.getResponseBody().write(response.getBytes(DEFAULT_CHARSET));
+        httpExchange.getResponseBody().write(response.getBytes(StandardCharsets.UTF_8));
         httpExchange.close();
     }
 
@@ -31,7 +31,7 @@ public class BaseHttpHandler implements HttpHandler {
         sendText(httpExchange, "Not Found", 404);
     }
 
-    protected  void sendHasInteractions(HttpExchange httpExchange) throws IOException {
+    protected void sendHasInteractions(HttpExchange httpExchange) throws IOException {
         sendText(httpExchange, "Not Acceptable", 406);
     }
 
@@ -40,6 +40,6 @@ public class BaseHttpHandler implements HttpHandler {
     }
 
     @Override
-    public void handle(HttpExchange exchange) throws IOException {
+    public void handle(HttpExchange httpExchange) throws IOException {
     }
 }
