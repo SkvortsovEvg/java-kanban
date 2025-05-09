@@ -1,6 +1,6 @@
 package task;
 
-import enums.Status;
+import enums.TaskStatus.Status;
 
 public class Subtask extends Task {
     private final int epicID;

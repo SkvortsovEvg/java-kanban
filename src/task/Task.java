@@ -1,6 +1,6 @@
 package task;
 
-import enums.Status;
+import enums.TaskStatus.Status;
 
 public class Task {
     private int id = 1;
