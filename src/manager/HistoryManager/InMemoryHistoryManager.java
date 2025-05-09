@@ -13,6 +13,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         Node item = new Node();
         item.setTask(task);
 
+
         if (table.containsKey(task.getId())) {
             removeNode(table.get(task.getId()));
         }
